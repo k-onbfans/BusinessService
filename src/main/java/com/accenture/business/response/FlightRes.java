@@ -22,6 +22,8 @@ public class FlightRes {
     private String estimatedDepartureTime;
     private String estimatedArrivalTime;
 
+    public FlightRes(){}
+
     public FlightRes(JSONObject result){
         this.flightNumber = result.getString("flightNumber");
 
