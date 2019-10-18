@@ -4,31 +4,18 @@ import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
 import com.accenture.business.response.FlightRes;
 import com.accenture.business.utils.HttpUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.util.BeanUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/")
 public class MainController {
     @Autowired
-    private RestTemplate restTemplate;
-
     private HttpUtil httpUtil;
 
     @Value("${flightInfoByFDUrl}")
@@ -47,84 +34,52 @@ public class MainController {
     private String flightInfoByODUrl;
 
 
-    @RequestMapping("/findbyflightnumberanddeparturedate")
+    @PostMapping("/findbyflightnumberanddeparturedate")
     public FlightRes findByFlightNumberAndDepartureDate(@RequestBody FindByFlightNumberReq request){
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        HttpEntity<FindByFlightNumberReq> flightRequest = new HttpEntity<FindByFlightNumberReq>(request, headers);
-//        ResponseEntity<JSONObject> flightInfoEntity = restTemplate.postForEntity(flightInfoByFDUrl, flightRequest, JSONObject.class);
-//        JSONObject result = flightInfoEntity.getBody();
-//
-//        ResponseEntity<JSONObject> flightStatusEntity = restTemplate.postForEntity(flightStatusByFDUrl, flightRequest, JSONObject.class);
-//        result.putAll(flightStatusEntity.getBody());
-//
-//        ResponseEntity<JSONObject> flightTimeEntity = restTemplate.postForEntity(flightTimeByFDUrl, flightRequest, JSONObject.class);
-//        result.putAll(flightTimeEntity.getBody());
 
-        JSONObject result = httpUtil.postForEntity(flightInfoByFDUrl,request);
+        FlightRes flightRes = httpUtil.flightResFromFindByFlightNumberReq(flightInfoByFDUrl,request);
 
-        result.putAll(httpUtil.postForEntity(flightStatusByFDUrl,request));
+        FlightRes flightRes2 = httpUtil.flightResFromFindByFlightNumberReq(flightStatusByFDUrl,request);
+        flightRes.setStatus(flightRes2.getStatus());
+        flightRes.setDepartureDate(flightRes2.getDepartureDate());
 
-        result.putAll(httpUtil.postForEntity(flightTimeByFDUrl,request));
+        FlightRes flightRes3 = httpUtil.flightResFromFindByFlightNumberReq(flightTimeByFDUrl,request);
+        flightRes.setEstimatedDepartureTime(flightRes3.getEstimatedDepartureTime());
+        flightRes.setEstimatedArrivalTime(flightRes3.getEstimatedArrivalTime());
+        flightRes.setScheduledDepartureTime(flightRes3.getScheduledDepartureTime());
+        flightRes.setScheduledArrivalTime(flightRes3.getScheduledArrivalTime());
 
-        FlightRes flightRes  = new FlightRes(result);
         return flightRes;
     }
 
-    @RequestMapping("/findbyflightnumberanddeparturedate2")
-    public JSONObject findByFlightNumberAndDepartureDate2 (@RequestBody FindByFlightNumberReq request){
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//
-//        HttpEntity<FindByFlightNumberReq> flightRequest = new HttpEntity<FindByFlightNumberReq>(request, headers);
-//
-//        ResponseEntity<JSONObject> flightInfoEntity = restTemplate.postForEntity(flightByFDUrl, flightRequest, JSONObject.class);
-//        JSONObject result = flightInfoEntity.getBody();
-        JSONObject result = httpUtil.postForEntity(flightByFDUrl,request);
-
-        return result;
+    @PostMapping("/findbyflightnumberanddeparturedate2")
+    public FlightRes findByFlightNumberAndDepartureDate2 (@RequestBody FindByFlightNumberReq request){
+        return httpUtil.flightResFromFindByFlightNumberReq(flightByFDUrl,request);
     }
 
-    @RequestMapping("/findbyroute")
+    @PostMapping("/findbyroute")
     public List<FlightRes> findByRoute (@RequestBody FindByRouteReq request){
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//
-//        HttpEntity<FindByRouteReq> flightInfoRequest = new HttpEntity<FindByRouteReq>(request, headers);
-//
-//        ResponseEntity<JSONObject> flightInfoEntity = restTemplate.postForEntity(flightInfoByODUrl, flightInfoRequest, JSONObject.class);
-        JSONArray flightInfoResult = httpUtil.postForEntity(flightInfoByODUrl,request).getJSONArray("list");
 
-        List<FlightRes> list = new ArrayList<FlightRes>();
-        list= JSONObject.parseArray(flightInfoResult.toJSONString(), FlightRes.class);
+        List<FlightRes> list = httpUtil.flightResesFromFindByRouteReq(flightInfoByODUrl,request).getList();
+
 
         FindByFlightNumberReq req = new FindByFlightNumberReq();
         req.setDepartureDate(request.getDepartureDate());
         list.forEach(flightRes -> {
             req.setFlightNumber(flightRes.getFlightNumber());
-//            HttpEntity<FindByFlightNumberReq> flightStatusRequest = new HttpEntity<FindByFlightNumberReq>(req, headers);
-//            ResponseEntity<JSONObject> flightStatusEntity = httpUtil.postForEntity(flightStatusByFDUrl, flightStatusRequest, JSONObject.class);
-            JSONObject Statusresult = httpUtil.postForEntity(flightStatusByFDUrl,request);
-            FlightRes flightStatusRes = Statusresult.toJavaObject(FlightRes.class);
-            flightRes.setStatus(flightStatusRes.getStatus());
-            flightRes.setDepartureDate(flightStatusRes.getDepartureDate());
 
-            req.setFlightNumber(flightRes.getFlightNumber());
-//            HttpEntity<FindByFlightNumberReq> flightTimeRequest = new HttpEntity<FindByFlightNumberReq>(req, headers);
-//            ResponseEntity<JSONObject> flightTimeEntity = restTemplate.postForEntity(flightTimeByFDUrl, flightTimeRequest, JSONObject.class);
-            JSONObject Timeresult = httpUtil.postForEntity(flightTimeByFDUrl,request);
-            FlightRes flightTimeRes = Timeresult.toJavaObject(FlightRes.class);
-            flightRes.setScheduledArrivalTime(flightTimeRes.getScheduledArrivalTime());
-            flightRes.setScheduledDepartureTime(flightTimeRes.getScheduledDepartureTime());
-            flightRes.setEstimatedArrivalTime(flightTimeRes.getEstimatedArrivalTime());
-            flightRes.setEstimatedDepartureTime(flightTimeRes.getEstimatedDepartureTime());
+            FlightRes statusresult = httpUtil.flightResFromFindByFlightNumberReq(flightStatusByFDUrl,req);
+            flightRes.setStatus(statusresult.getStatus());
+            flightRes.setDepartureDate(statusresult.getDepartureDate());
+
+            FlightRes timeresult = httpUtil.flightResFromFindByFlightNumberReq(flightTimeByFDUrl,req);
+            flightRes.setScheduledArrivalTime(timeresult.getScheduledArrivalTime());
+            flightRes.setScheduledDepartureTime(timeresult.getScheduledDepartureTime());
+            flightRes.setEstimatedArrivalTime(timeresult.getEstimatedArrivalTime());
+            flightRes.setEstimatedDepartureTime(timeresult.getEstimatedDepartureTime());
         });
 
         return list;
     }
-
 
 }

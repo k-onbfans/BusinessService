@@ -1,11 +1,6 @@
 package com.accenture.business.response;
 
 import com.alibaba.fastjson.JSONObject;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import java.sql.Date;
 
 public class FlightRes {
     private String flightNumber;
