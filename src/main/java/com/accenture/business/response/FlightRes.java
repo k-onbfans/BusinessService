@@ -117,4 +117,20 @@ public class FlightRes {
 
         this.estimatedArrivalTime = result.getString("estimatedArrivalTime");
     }
+
+    @Override
+    public String toString() {
+        return "FlightRes{" +
+                "flightNumber='" + flightNumber + '\'' +
+                ", originPort='" + originPort + '\'' +
+                ", destinationPort='" + destinationPort + '\'' +
+                ", aircraft='" + aircraft + '\'' +
+                ", departureDate='" + departureDate + '\'' +
+                ", status='" + status + '\'' +
+                ", scheduledDepartureTime='" + scheduledDepartureTime + '\'' +
+                ", scheduledArrivalTime='" + scheduledArrivalTime + '\'' +
+                ", estimatedDepartureTime='" + estimatedDepartureTime + '\'' +
+                ", estimatedArrivalTime='" + estimatedArrivalTime + '\'' +
+                '}';
+    }
 }
