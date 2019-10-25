@@ -1,5 +1,6 @@
 package com.accenture.business.service.impl;
 
+import com.accenture.business.handler.aop.LogTime;
 import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
 import com.accenture.business.response.FlightRes;
@@ -33,6 +34,7 @@ public class MainServiceImpl implements MainService {
     private String flightInfoByODUrl;
 
     @Override
+    @LogTime
     public FlightRes findByFlightNumberAndDepartureDate(FindByFlightNumberReq request) {
 
         FlightRes flightRes = httpUtil.flightResFromFindByFlightNumberReq(flightInfoByFDUrl,request);
@@ -51,11 +53,13 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
+    @LogTime
     public FlightRes findByFlightNumberAndDepartureDate2(FindByFlightNumberReq request) {
         return httpUtil.flightResFromFindByFlightNumberReq(flightByFDUrl,request);
     }
 
     @Override
+    @LogTime
     public List<FlightRes> findByRoute(FindByRouteReq request) {
         List<FlightRes> list = httpUtil.flightResesFromFindByRouteReq(flightInfoByODUrl,request).getList();
 
