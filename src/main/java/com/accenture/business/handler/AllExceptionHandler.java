@@ -17,9 +17,9 @@ public class AllExceptionHandler {
     private Map<String, Object> MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException error){
         Map<String, Object> map = new HashMap<>();
         ObjectError e = error.getBindingResult().getAllErrors().get(0);
-        map.put("status",400);
-        map.put("error","Bad Request");
         map.put("defaultMessage",e.getDefaultMessage());
+        map.put("error","Bad Request");
+        map.put("status",400);
         return map;
     }
 }

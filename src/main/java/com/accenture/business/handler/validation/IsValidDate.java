@@ -1,15 +1,10 @@
 package com.accenture.business.handler.validation;
 
-
-import com.accenture.business.utils.DateUtil;
-
 import javax.validation.*;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.ElementType.PARAMETER;
@@ -50,7 +45,7 @@ public @interface IsValidDate {
         @Override
         public boolean isValid(Date date, ConstraintValidatorContext constraintValidatorContext) {
             if(comparable){
-                Date now = new Date();
+                Date now = new Date(System.currentTimeMillis());
                 if(future) {
                     if(date.after(now)) {
                         return true;
