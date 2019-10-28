@@ -8,6 +8,7 @@ import com.accenture.business.service.MainService;
 import com.accenture.business.utils.HttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,13 +23,13 @@ public class MainController {
     private MainService mainService;
 
     @PostMapping("/findbyflightnumberanddeparturedate")
-    public FlightRes findByFlightNumberAndDepartureDate(@RequestBody FindByFlightNumberReq request){
+    public FlightRes findByFlightNumberAndDepartureDate(@RequestBody @Validated FindByFlightNumberReq request){
         return mainService.findByFlightNumberAndDepartureDate(request);
     }
 
 
     @PostMapping("/findbyflightnumberanddeparturedate2")
-    public FlightRes findByFlightNumberAndDepartureDate2 (@RequestBody FindByFlightNumberReq request){
+    public FlightRes findByFlightNumberAndDepartureDate2 (@RequestBody @Validated FindByFlightNumberReq request){
         return mainService.findByFlightNumberAndDepartureDate2(request);
     }
 

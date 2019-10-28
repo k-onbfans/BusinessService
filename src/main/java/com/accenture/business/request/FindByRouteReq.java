@@ -1,10 +1,16 @@
 package com.accenture.business.request;
 
+import com.accenture.business.handler.validation.IsValidDate;
+
 import java.sql.Date;
 
 public class FindByRouteReq {
+
     private String originPort;
+
     private String destinationPort;
+
+    @IsValidDate(future = true)
     private Date departureDate;
 
     public String getOriginPort() {

@@ -62,8 +62,6 @@ public class MainServiceImpl implements MainService {
     @LogTime
     public List<FlightRes> findByRoute(FindByRouteReq request) {
         List<FlightRes> list = httpUtil.flightResesFromFindByRouteReq(flightInfoByODUrl,request).getList();
-
-
         FindByFlightNumberReq req = new FindByFlightNumberReq();
         req.setDepartureDate(request.getDepartureDate());
         list.forEach(flightRes -> {
