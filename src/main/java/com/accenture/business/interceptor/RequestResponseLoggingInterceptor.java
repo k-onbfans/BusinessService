@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
-import org.apache.commons.lang.StringUtils;
 import java.io.IOException;
 
 public class RequestResponseLoggingInterceptor implements ClientHttpRequestInterceptor {
@@ -20,26 +19,18 @@ public class RequestResponseLoggingInterceptor implements ClientHttpRequestInter
             throws IOException {
         String requestBody = new String(body, "UTF-8");
         logger.info(
-                request.getMethod().name() + "\n" +
-                request.getHeaders().toString() + "\n" +
-                requestBody + "\n" +
-                body.length + "\n" +
-                "External call request:" + request.getURI()
+                "\n" +
+                "Method: " + request.getMethod().name() + "\n" +
+                "Header: " + request.getHeaders().toString() + "\n" +
+                "url: " + request.getURI() + "\n" +
+                "requestBody: " + requestBody
         );
         ClientHttpResponse response = execution.execute(request, body);
         MediaType contentType = response.getHeaders().getContentType();
-        logger.info(
-                request.getMethod().name() + "\n" +
-                StringUtils.EMPTY + "\n" +
-                response.getHeaders().toString() + "\n" +
-                -1 + "\n" +
-                String.format(
-                        "External call response: %s " +
-                                "The response content type is %s. " +
-                                "According to the config RESTTEMPLATE_DISABLE_BODY_LOG_CONTENT_TYPE, this response body and its size won't be logged.",
-                        request.getURI(),
-                        contentType.toString()
-                )
+        logger.info("\n" +
+                "Method: " + request.getMethod().name() + "\n" +
+                "Header: " + response.getHeaders().toString() + "\n" +
+                "responseBody: " + response.getBody()
         );
         return response;
     }

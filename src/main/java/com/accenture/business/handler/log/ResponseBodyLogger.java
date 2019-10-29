@@ -27,7 +27,7 @@ public class ResponseBodyLogger implements ResponseBodyAdvice<Object> {
     @Override
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         String  strBody = JSON.toJSONString(o);
-        logger.info("responseBody:\n" + strBody);
+        logger.info("\n" + "responseBody:\n" + strBody);
         return o;
     }
 }
