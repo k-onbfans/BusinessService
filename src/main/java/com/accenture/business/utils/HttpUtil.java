@@ -14,10 +14,10 @@ public interface HttpUtil {
 
     public FlightReses flightResesFromFindByRouteReq(String url, FindByRouteReq request);
 
-    public FlightV1Res GetFlightV1(String url);
+    public String GetFlightV1(String url);
 
-    public FlightV1Res PostFlightV1(String url, FindByFlightNumberReq request);
+    public String PostFlightV1(String url, FindByFlightNumberReq request);
 
-    public FlightV1Reses PostFlightByRouteV1(String url, Port request);
+    public String PostFlightByRouteV1(String url, Port request);
 
 }

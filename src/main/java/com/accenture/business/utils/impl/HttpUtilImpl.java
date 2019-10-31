@@ -35,25 +35,26 @@ public class HttpUtilImpl implements HttpUtil {
     }
 
     @Override
-    public FlightV1Res GetFlightV1(String url){
+    public String GetFlightV1(String url){
 
-        ResponseEntity<FlightV1Res> entity = restTemplate.getForEntity(url,FlightV1Res.class);
-
-        return entity.getBody();
-    }
-
-    @Override
-    public FlightV1Res PostFlightV1(String url, FindByFlightNumberReq request) {
-
-        ResponseEntity<FlightV1Res> entity = restTemplate.postForEntity(url,request,FlightV1Res.class);
+        ResponseEntity<String> entity = restTemplate.getForEntity(url,String.class);
 
         return entity.getBody();
     }
 
     @Override
-    public FlightV1Reses PostFlightByRouteV1(String url, Port request) {
+    public String PostFlightV1(String url, FindByFlightNumberReq request) {
 
-        ResponseEntity<FlightV1Reses> entity = restTemplate.postForEntity(url,request,FlightV1Reses.class);
+        ResponseEntity<String> entity = restTemplate.postForEntity(url,request,String.class);
+
+
+        return entity.getBody();
+    }
+
+    @Override
+    public String PostFlightByRouteV1(String url, Port request) {
+
+        ResponseEntity<String> entity = restTemplate.postForEntity(url,request,String.class);
 
         return entity.getBody();
     }
