@@ -1,21 +1,37 @@
 package com.accenture.business.v1.response;
 
+import com.accenture.business.handler.reflect.TypeReflect;
 import com.accenture.business.v1.bean.DepAndArrTime;
 import com.accenture.business.v1.bean.Port;
 
 public class FlightV1Res {
+    @TypeReflect(value = "flightNumber")
     private String flightNumber;
+
+    @TypeReflect(value = "port")
     private Port port;
+
+    @TypeReflect(value = "aircraft")
     private String aircraft;
+
+    @TypeReflect(value = "departureDate")
     private String departureDate;
+
+    @TypeReflect(value = "status")
     private String status;
+
+    @TypeReflect(value = "scheduledTime")
     private DepAndArrTime scheduledTime;
+
+    @TypeReflect(value = "estimatedTime")
     private DepAndArrTime estimatedTime;
 
+    @TypeReflect(value = "FlightNumber",notnull = true)
     public String getFlightNumber() {
         return flightNumber;
     }
 
+    @TypeReflect(value = "FlightNumber",notnull = true)
     public void setFlightNumber(String flightNumber) {
         this.flightNumber = flightNumber;
     }
@@ -40,7 +56,7 @@ public class FlightV1Res {
         return departureDate;
     }
 
-    public void setDepartureDate(String departureDate) {
+    public void setDepartureDate(@TypeReflect(value = "departure") String departureDate) {
         this.departureDate = departureDate;
     }
 
@@ -60,6 +76,7 @@ public class FlightV1Res {
         this.scheduledTime = scheduledTime;
     }
 
+    @TypeReflect(value = "getEstimatedTime",notnull = true)
     public DepAndArrTime getEstimatedTime() {
         return estimatedTime;
     }

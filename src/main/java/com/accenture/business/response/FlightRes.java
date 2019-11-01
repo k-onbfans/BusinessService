@@ -1,17 +1,38 @@
 package com.accenture.business.response;
 
+import com.accenture.business.handler.reflect.TypeReflect;
 import com.alibaba.fastjson.JSONObject;
 
 public class FlightRes {
+
+    @TypeReflect(value = "flightNumber")
     private String flightNumber;
+
+    @TypeReflect(value = "originPort")
     private String originPort;
+
+    @TypeReflect(value = "destinationPort")
     private String destinationPort;
+
+    @TypeReflect(value = "aircraft")
     private String aircraft;
+
+    @TypeReflect(value = "departureDate")
     private String departureDate;
+
+    @TypeReflect(value = "status")
     private String status;
+
+    @TypeReflect(value = "scheduledDepartureTime")
     private String scheduledDepartureTime;
+
+    @TypeReflect(value = "scheduledArrivalTime")
     private String scheduledArrivalTime;
+
+    @TypeReflect(value = "estimatedDepartureTime")
     private String estimatedDepartureTime;
+
+    @TypeReflect(value = "estimatedArrivalTime")
     private String estimatedArrivalTime;
 
     public String getFlightNumber() {
