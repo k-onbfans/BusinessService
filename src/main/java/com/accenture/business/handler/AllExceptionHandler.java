@@ -14,7 +14,7 @@ public class AllExceptionHandler {
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseBody
-    private Map<String, Object> MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException error){
+    private Map<String, Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException error){
         Map<String, Object> map = new HashMap<>();
         ObjectError e = error.getBindingResult().getAllErrors().get(0);
         map.put("defaultMessage",e.getDefaultMessage());

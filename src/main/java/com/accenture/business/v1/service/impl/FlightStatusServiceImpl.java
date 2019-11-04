@@ -47,15 +47,15 @@ public class FlightStatusServiceImpl implements FlightStatusService {
 
         String infoResponse = httpUtil.GetFlightV1(FlightInfoUrl);
         FlightV1Res response = new FlightV1Res();
-        response = JSONUtil.StringToDTO(infoResponse,response,FlightV1Res.class);
+        response = JSONUtil.stringToDTO(infoResponse,response,FlightV1Res.class);
 
         String statusResponse = httpUtil.PostFlightV1(flightStatusUrl,request);
 
-        response = JSONUtil.StringToDTO(statusResponse,response,FlightV1Res.class);
+        response = JSONUtil.stringToDTO(statusResponse,response,FlightV1Res.class);
 
         String timeResponse = httpUtil.PostFlightV1(flightTimeUrl,request);
 
-        response = JSONUtil.StringToDTO(timeResponse,response,FlightV1Res.class);
+        response = JSONUtil.stringToDTO(timeResponse,response,FlightV1Res.class);
 
 //        infoRes.setDepartureDate(statusRes.getDepartureDate());
 //        infoRes.setStatus(statusRes.getStatus());

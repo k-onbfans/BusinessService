@@ -24,6 +24,7 @@ public class MainController {
 
     @PostMapping("/findbyflightnumberanddeparturedate")
     public FlightRes findByFlightNumberAndDepartureDate(@RequestBody @Validated FindByFlightNumberReq request){
+
         return mainService.findByFlightNumberAndDepartureDate(request);
     }
 
