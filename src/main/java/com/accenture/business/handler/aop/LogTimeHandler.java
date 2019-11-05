@@ -1,6 +1,5 @@
 package com.accenture.business.handler.aop;
 
-import com.accenture.business.handler.log.RequestBodyLogger;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -15,30 +14,32 @@ import java.text.SimpleDateFormat;
 @Component
 public class LogTimeHandler {
 
-    private static long startTime;
-
-    private static long endTime;
+    private long startTime;
 
 
-    private static final Logger logger = LoggerFactory.getLogger(RequestBodyLogger.class);
+    private static final Logger logger = LoggerFactory.getLogger(LogTimeHandler.class);
 
     @Pointcut(value = "@annotation(com.accenture.business.handler.aop.LogTime)")
-    public void LogTime() {
+    public void logTime() {
+        //Do noting
     }
 
-    @Before("LogTime()")
+    @Before("logTime()")
     public void doBefore (){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         startTime = System.currentTimeMillis();
-        logger.info("Service start time :" + df.format(startTime));
+        String str = df.format(startTime);
+        logger.info("Service start time : {}",str);
+
     }
 
-    @After("LogTime()")
+    @After("logTime()")
     public void doAfter (){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        endTime = System.currentTimeMillis();
-        logger.info("Service end time :" + df.format(endTime));
+        long endTime = System.currentTimeMillis();
+        String str = df.format(endTime);
+        logger.info("Service end time : {}",str);
         Long timeCost = endTime - startTime;
-        logger.info("Time cost: {0} ms",timeCost);
+        logger.info("Time cost: {} ms",timeCost);
     }
 }

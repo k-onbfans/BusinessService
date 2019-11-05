@@ -1,13 +1,10 @@
 package com.accenture.business.controller;
 
-import com.accenture.business.handler.aop.LogTime;
 import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
 import com.accenture.business.response.FlightRes;
 import com.accenture.business.service.MainService;
-import com.accenture.business.utils.HttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

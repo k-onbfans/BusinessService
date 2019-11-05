@@ -11,11 +11,16 @@ import com.accenture.business.v1.response.FlightV1Reses;
 import com.accenture.business.v2.service.FlightStatusV2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 @Service
+@EnableAsync
 public class FlightStatusV2ServiceImpl implements FlightStatusV2Service {
 
     @Autowired
@@ -33,7 +38,8 @@ public class FlightStatusV2ServiceImpl implements FlightStatusV2Service {
 
     @Override
     @LogTime
-    public FlightV1Reses searchByRoute(FindByRouteReq request) {
+    @Async
+    public Future<FlightV1Reses> searchByRoute(FindByRouteReq request) {
         FlightV1Reses reses = new FlightV1Reses();
         Port port = new Port();
         port.setDestination(request.getDestinationPort());
@@ -56,6 +62,6 @@ public class FlightStatusV2ServiceImpl implements FlightStatusV2Service {
 
         }
         reses.setList(resList);
-        return reses;
+        return new AsyncResult<>(reses);
     }
 }
