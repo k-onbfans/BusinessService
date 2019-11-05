@@ -148,9 +148,9 @@ public class JSONUtil {
         if(field.getAnnotation(FieldIgnore.class) == null &&
                 getter.getAnnotation(FieldIgnore.class) == null &&
                 setter.getParameters()[0].getAnnotation(FieldIgnore.class) == null){
-            fieldIgnore = true;
-        }else {
             fieldIgnore = false;
+        }else {
+            fieldIgnore = true;
         }
         return fieldIgnore;
     }

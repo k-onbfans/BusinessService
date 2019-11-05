@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAd
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 
 @ControllerAdvice
 public class RequestBodyLogger extends RequestBodyAdviceAdapter {
@@ -33,10 +34,9 @@ public class RequestBodyLogger extends RequestBodyAdviceAdapter {
     @Override
     public HttpInputMessage beforeBodyRead(HttpInputMessage inputMessage, MethodParameter parameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) throws IOException {
         byte[] body = IOUtils.toByteArray(inputMessage.getBody());
-        String strBody = new String(body,"UTF-8");
-        logger.info(parameter.getMethod().getName() + "\ntargetType:" + targetType.getTypeName() + "\nparameter:" + parameter.getParameterName() + "\n" + strBody);
-        SimpleHttpInputMessage simpleHttpInputMessage = new SimpleHttpInputMessage(inputMessage.getHeaders(), new ByteArrayInputStream(body));
-        return simpleHttpInputMessage;
+        String strBody = new String(body, StandardCharsets.UTF_8);
+        logger.info("{0} \ntargetType: {1} \nparameter: {2} \n {3}",parameter.getMethod().getName(),targetType.getTypeName(),parameter.getParameterName(),strBody);
+        return new SimpleHttpInputMessage(inputMessage.getHeaders(), new ByteArrayInputStream(body));
     }
 
 
