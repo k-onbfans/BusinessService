@@ -10,6 +10,9 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * @author yifei.zhu
+ */
 @Documented
 @Constraint(validatedBy = IsValidDate.ValidChecker.class)
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
@@ -44,19 +47,22 @@ public @interface IsValidDate {
 
         @Override
         public boolean isValid(Date date, ConstraintValidatorContext constraintValidatorContext) {
+            boolean valid;
             if(comparable){
                 Date now = new Date(System.currentTimeMillis());
                 if(future) {
                     if(date.after(now)) {
-                        return true;
+                        valid = true;
                     }else {
-                        return false;
+                        valid = false;
                     }
                 } else {
-                    return true;
+                    valid = true;
                 }
+            }else {
+                valid = true;
             }
-            return true;
+            return valid;
         }
     }
 }

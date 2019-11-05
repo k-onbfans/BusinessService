@@ -10,11 +10,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Aspect
 @Component
 public class LogTimeHandler {
+
+    private static long startTime;
+
+    private static long endTime;
+
 
     private static final Logger logger = LoggerFactory.getLogger(RequestBodyLogger.class);
 
@@ -25,12 +29,16 @@ public class LogTimeHandler {
     @Before("LogTime()")
     public void doBefore (){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        logger.info("Service start time :" + df.format(new Date()));
+        startTime = System.currentTimeMillis();
+        logger.info("Service start time :" + df.format(startTime));
     }
 
     @After("LogTime()")
     public void doAfter (){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        logger.info("Service end time :" + df.format(new Date()));
+        endTime = System.currentTimeMillis();
+        logger.info("Service end time :" + df.format(endTime));
+        Long timeCost = endTime - startTime;
+        logger.info("Time cost: {0} ms",timeCost);
     }
 }
