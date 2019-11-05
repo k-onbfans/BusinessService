@@ -25,4 +25,4 @@ public class SimpleHttpInputMessage implements HttpInputMessage {
     public InputStream getBody() throws IOException {
         return inputStream;
     }
-};
+}
