@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 @ControllerAdvice
 public class ResponseBodyLogger implements ResponseBodyAdvice<Object> {
 
-    private static final Logger logger = LoggerFactory.getLogger(RequestBodyLogger.class);
+    private static final Logger logger = LoggerFactory.getLogger(ResponseBodyLogger.class);
 
 
     @Override
@@ -27,7 +27,7 @@ public class ResponseBodyLogger implements ResponseBodyAdvice<Object> {
     @Override
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         String  strBody = JSON.toJSONString(o);
-        logger.info("\n" + "responseBody:\n" + strBody);
+        logger.info("\n" + "responseBody:\n {}",strBody);
         return o;
     }
 }
