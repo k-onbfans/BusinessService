@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-import java.sql.Date;
 
 @Aspect
 @Component
@@ -39,6 +38,7 @@ public class LogTimeHandler {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         endTime = System.currentTimeMillis();
         logger.info("Service end time :" + df.format(endTime));
-        logger.info("Time cost:" + (endTime - startTime) +"ms");
+        Long timeCost = endTime - startTime;
+        logger.info("Time cost: {0} ms",timeCost);
     }
 }

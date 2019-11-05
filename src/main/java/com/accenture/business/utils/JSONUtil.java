@@ -18,50 +18,28 @@ public class JSONUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(JSONUtil.class);
 
-    public static <T> JsonObject DTOToJsonObject(JsonObject jsonObject,T obj,Class<T> clazz){
+    public static <T> JsonObject convertDTOToJsonObject(JsonObject jsonObject,T obj,Class<T> clazz){
         Field[] fields = clazz.getDeclaredFields();
         Method[] methods = clazz.getDeclaredMethods();
-        Method getMethod = null;
-        Method setMethod = null;
-        TypeReflect typeReflect;
         for (Field field:fields) {
-            getMethod = findGetter(methods,field.getName());
-            setMethod = findSetter(methods,field.getName());
             try {
+                Method getMethod = findGetter(methods,field.getName());
+                Method setMethod = findSetter(methods,field.getName());
                 String name = field.getName();
-                typeReflect = field.getAnnotation(TypeReflect.class);
-                if(field.getAnnotation(FieldIgnore.class) == null &&
-                        getMethod.getAnnotation(FieldIgnore.class) == null &&
-                        setMethod.getParameters()[0].getAnnotation(FieldIgnore.class) == null){
-                    if (field.getAnnotation(TypeReflect.class) != null) {
-                        name = typeReflect.value();
-                    }else if (getMethod.getAnnotation(TypeReflect.class) != null){
-                        name = getMethod.getAnnotation(TypeReflect.class).value();
-                    } else if(setMethod.getParameters()[0].getAnnotation(TypeReflect.class) != null){
-                        name = setMethod.getParameters()[0].getAnnotation(TypeReflect.class).value();
-                    }
-                    if (field.get(obj) != null) {
-                        field.setAccessible(true);
-                        Type type = field.getGenericType();
-                        if (((Class) type).isPrimitive()) {
-                            JsonPrimitive jsonPrimitive = new JsonPrimitive(field.get(obj).toString());
-                            jsonObject.add(name,jsonPrimitive);
-                        }
-                        if (((Class) type).isSynthetic()) {
-                            JsonObject newJsonObject;
-                            newJsonObject = DTOToJsonObject(jsonObject,field.get(obj),((Class) type));
-                            jsonObject.add(field.getName(),newJsonObject);
-                        }
-                    } else {
-                        if (field.getAnnotation(FieldNotNull.class) != null ||
-                                getMethod.getAnnotation(FieldNotNull.class) != null ||
-                                setMethod.getParameters()[0].getAnnotation(FieldNotNull.class) != null) {
-                            throw new MustNotNullException();
-                        }
-                    }
+                isMethodNull(getMethod,setMethod);
+                if(hasFieldIgnore(field,getMethod,setMethod)){
+                    return jsonObject;
+                }
+                name = hasTypeReflect(name,getMethod,setMethod,field);
+                if (field.get(obj) != null) {
+                    jsonObject = getField(field,obj,name,jsonObject);
+                } else {
+                    ifNotNull(field,getMethod,setMethod);
                 }
             } catch (IllegalAccessException e){
                 logger.error("catch IllegalAccessException or NoSuchMethodException");
+            } catch (NullPointerException e){
+                logger.error("catch Exception");
             }
         }
         return jsonObject;
@@ -75,58 +53,20 @@ public class JSONUtil {
         JsonObject jsonObject = new JsonParser().parse(str).getAsJsonObject();
         Field[] fields = clazz.getDeclaredFields();
         Method[] methods = clazz.getDeclaredMethods();
-        Method getMethod = null;
-        Method setMethod = null;
-        TypeReflect typeReflect;
         for (Field field:fields) {
-            getMethod = findGetter(methods,field.getName());
-            setMethod = findSetter(methods,field.getName());
             try {
+                Method getMethod = findGetter(methods,field.getName());
+                Method setMethod = findSetter(methods,field.getName());
                 String name = field.getName();
-                typeReflect = field.getAnnotation(TypeReflect.class);
-                if(field.getAnnotation(FieldIgnore.class) == null &&
-                        getMethod.getAnnotation(FieldIgnore.class) == null &&
-                        setMethod.getParameters()[0].getAnnotation(FieldIgnore.class) == null){
-                    if (field.getAnnotation(TypeReflect.class) != null) {
-                        name = typeReflect.value();
-                    }else if (getMethod.getAnnotation(TypeReflect.class) != null){
-                        name = getMethod.getAnnotation(TypeReflect.class).value();
-                    } else if(setMethod.getParameters()[0].getAnnotation(TypeReflect.class) != null){
-                        name = setMethod.getParameters()[0].getAnnotation(TypeReflect.class).value();
-                    }
-                    if (jsonObject.get(name) != null) {
-                        field.setAccessible(true);
-                        Type type = field.getGenericType();
-                        JsonElement fieldElement = jsonObject.get(name);
-                        if (fieldElement.isJsonPrimitive()) {
-                            field.set(obj, fieldElement.getAsString());
-                        }
-                        if (fieldElement.isJsonObject() && type instanceof Class) {
-                            field.set(obj, stringToDTO(fieldElement.toString(), ((Class) type).getConstructor().newInstance(), (Class) type));
-                        }
-                        if(fieldElement.isJsonArray()){
-                            List<Object> list = new ArrayList<>();
-                            for(JsonElement jsonElement : fieldElement.getAsJsonArray()){
-                                if (jsonElement.isJsonPrimitive()) {
-                                    Object object = fieldElement.getAsString();
-                                    list.add(object);
-                                }
-                                if (jsonElement.isJsonObject()) {
-                                    Object object;
-                                    Class<T> entityClass = (Class<T>)((ParameterizedType) type).getActualTypeArguments()[0];
-                                    object = stringToDTO(jsonElement.toString(),entityClass.getConstructor().newInstance(),entityClass);
-                                    list.add(object);
-                                }
-                            }
-                            field.set(obj,list);
-                        }
-                    } else {
-                        if (field.getAnnotation(FieldNotNull.class) != null ||
-                                getMethod.getAnnotation(FieldNotNull.class) != null ||
-                                setMethod.getParameters()[0].getAnnotation(FieldNotNull.class) != null) {
-                            throw new MustNotNullException();
-                        }
-                    }
+                isMethodNull(getMethod,setMethod);
+                if(hasFieldIgnore(field,getMethod,setMethod)){
+                    break;
+                }
+                name = hasTypeReflect(name,getMethod,setMethod,field);
+                if (jsonObject.get(name) != null) {
+                    obj = setField(field,jsonObject,name,obj);
+                } else {
+                    ifNotNull(field,getMethod,setMethod);
                 }
             } catch (IllegalAccessException | NoSuchMethodException e){
                 logger.error("catch IllegalAccessException or NoSuchMethodException");
@@ -134,6 +74,8 @@ public class JSONUtil {
                 logger.error("catch InvocationTargetException");
             } catch (InstantiationException e) {
                 logger.error("catch InstantiationException");
+            } catch (NullPointerException e){
+                logger.error("catch NullPointerException");
             }
         }
         return obj;
@@ -171,4 +113,83 @@ public class JSONUtil {
         }
     }
 
+    private static <T> T setField(Field field,JsonObject jsonObject,String name,T obj) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+
+        field.setAccessible(true);
+        Type type = field.getGenericType();
+        JsonElement fieldElement = jsonObject.get(name);
+        if (fieldElement.isJsonPrimitive()) {
+            field.set(obj, fieldElement.getAsString());
+        }
+        if (fieldElement.isJsonObject() && type instanceof Class) {
+            field.set(obj, stringToDTO(fieldElement.toString(), ((Class) type).getConstructor().newInstance(), (Class) type));
+        }
+        if(fieldElement.isJsonArray()){
+            List<Object> list = new ArrayList<>();
+            for(JsonElement jsonElement : fieldElement.getAsJsonArray()){
+                if (jsonElement.isJsonPrimitive()) {
+                    Object object = fieldElement.getAsString();
+                    list.add(object);
+                }
+                if (jsonElement.isJsonObject()) {
+                    Object object;
+                    Class<T> entityClass = (Class<T>)((ParameterizedType) type).getActualTypeArguments()[0];
+                    object = stringToDTO(jsonElement.toString(),entityClass.getConstructor().newInstance(),entityClass);
+                    list.add(object);
+                }
+            }
+            field.set(obj,list);
+        }
+        return obj;
+    }
+
+    private static boolean hasFieldIgnore(Field field,Method getter,Method setter){
+        boolean fieldIgnore;
+        if(field.getAnnotation(FieldIgnore.class) == null &&
+                getter.getAnnotation(FieldIgnore.class) == null &&
+                setter.getParameters()[0].getAnnotation(FieldIgnore.class) == null){
+            fieldIgnore = true;
+        }else {
+            fieldIgnore = false;
+        }
+        return fieldIgnore;
+    }
+
+    private static void ifNotNull(Field field,Method getter,Method setter){
+        try {
+            if (field.getAnnotation(FieldNotNull.class) != null ||
+                    getter.getAnnotation(FieldNotNull.class) != null ||
+                    setter.getParameters()[0].getAnnotation(FieldNotNull.class) != null) {
+                throw new MustNotNullException();
+            }
+        }catch (MustNotNullException e){
+            logger.error("catch MustNotNullException");
+        }
+
+    }
+
+    private static void isMethodNull(Method getter,Method setter){
+        try {
+            if(getter == null || setter == null){
+                throw new NullPointerException();
+            }
+        }catch (NullPointerException e){
+            logger.error("catch NullPointerException");
+        }
+    }
+
+    private static <T> JsonObject getField(Field field,T obj,String name,JsonObject jsonObject) throws IllegalAccessException {
+        field.setAccessible(true);
+        Type type = field.getGenericType();
+        if (((Class) type).isPrimitive()) {
+            JsonPrimitive jsonPrimitive = new JsonPrimitive(field.get(obj).toString());
+            jsonObject.add(name,jsonPrimitive);
+        }
+        if (((Class) type).isSynthetic()) {
+            JsonObject newJsonObject;
+            newJsonObject = convertDTOToJsonObject(jsonObject,field.get(obj),((Class) type));
+            jsonObject.add(field.getName(),newJsonObject);
+        }
+        return jsonObject;
+    }
 }
