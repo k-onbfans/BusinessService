@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class JSONUtil {
@@ -102,6 +104,22 @@ public class JSONUtil {
                         if (fieldElement.isJsonObject() && type instanceof Class) {
                             field.set(obj, stringToDTO(fieldElement.toString(), ((Class) type).getConstructor().newInstance(), (Class) type));
                         }
+                        if(fieldElement.isJsonArray()){
+                            List<Object> list = new ArrayList<>();
+                            for(JsonElement jsonElement : fieldElement.getAsJsonArray()){
+                                if (jsonElement.isJsonPrimitive()) {
+                                    Object object = fieldElement.getAsString();
+                                    list.add(object);
+                                }
+                                if (jsonElement.isJsonObject()) {
+                                    Object object;
+                                    Class<T> entityClass = (Class<T>)((ParameterizedType) type).getActualTypeArguments()[0];
+                                    object = stringToDTO(jsonElement.toString(),entityClass.getConstructor().newInstance(),entityClass);
+                                    list.add(object);
+                                }
+                            }
+                            field.set(obj,list);
+                        }
                     } else {
                         if (field.getAnnotation(FieldNotNull.class) != null ||
                                 getMethod.getAnnotation(FieldNotNull.class) != null ||
@@ -139,6 +157,18 @@ public class JSONUtil {
             }
         }
         return null;
+    }
+
+    private static String hasTypeReflect(String name,Method getter,Method setter,Field field){
+        if (field.getAnnotation(TypeReflect.class) != null) {
+            return field.getAnnotation(TypeReflect.class).value();
+        }else if (getter.getAnnotation(TypeReflect.class) != null){
+            return getter.getAnnotation(TypeReflect.class).value();
+        } else if(setter.getParameters()[0].getAnnotation(TypeReflect.class) != null){
+            return setter.getParameters()[0].getAnnotation(TypeReflect.class).value();
+        }else {
+            return name;
+        }
     }
 
 }

@@ -6,8 +6,6 @@ import com.accenture.business.response.FlightRes;
 import com.accenture.business.response.FlightReses;
 import com.accenture.business.utils.HttpUtil;
 import com.accenture.business.v1.bean.Port;
-import com.accenture.business.v1.response.FlightV1Res;
-import com.accenture.business.v1.response.FlightV1Reses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -35,7 +33,7 @@ public class HttpUtilImpl implements HttpUtil {
     }
 
     @Override
-    public String GetFlightV1(String url){
+    public String getFlightV1(String url){
 
         ResponseEntity<String> entity = restTemplate.getForEntity(url,String.class);
 
@@ -43,7 +41,7 @@ public class HttpUtilImpl implements HttpUtil {
     }
 
     @Override
-    public String PostFlightV1(String url, FindByFlightNumberReq request) {
+    public String postFlightV1(String url, FindByFlightNumberReq request) {
 
         ResponseEntity<String> entity = restTemplate.postForEntity(url,request,String.class);
 
@@ -52,7 +50,7 @@ public class HttpUtilImpl implements HttpUtil {
     }
 
     @Override
-    public String PostFlightByRouteV1(String url, Port request) {
+    public String postFlightByRouteV1(String url, Port request) {
 
         ResponseEntity<String> entity = restTemplate.postForEntity(url,request,String.class);
 

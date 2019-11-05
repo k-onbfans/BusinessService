@@ -2,7 +2,6 @@ package com.accenture.business.v1.controller;
 
 import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
-import com.accenture.business.response.FlightRes;
 import com.accenture.business.v1.response.FlightV1Res;
 import com.accenture.business.v1.response.FlightV1Reses;
 import com.accenture.business.v1.service.FlightStatusService;
