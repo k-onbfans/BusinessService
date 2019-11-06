@@ -17,19 +17,19 @@ public class RequestResponseLoggingInterceptor implements ClientHttpRequestInter
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
             throws IOException {
         String requestBody = new String(body, StandardCharsets.UTF_8);
-        logger.info(
-                "\n" +
-                "Method: " + request.getMethod().name() + "\n" +
-                "Header: " + request.getHeaders().toString() + "\n" +
-                "url: " + request.getURI() + "\n" +
-                "requestBody: " + requestBody
-        );
+
+        String str1 = String.format("%n Method: %s %n Header: %s %n url: %s %n requestBody: %s",
+                request.getMethod().name(),
+                request.getHeaders().toString(),
+                request.getURI(),
+                requestBody);
+        logger.info(str1);
         ClientHttpResponse response = execution.execute(request, body);
-        logger.info("\n" +
-                "Method: " + request.getMethod().name() + "\n" +
-                "Header: " + response.getHeaders().toString() + "\n" +
-                "responseBody: " + response.getBody()
-        );
+        String str2 = String.format("%n Method: %s %n Header: %s %n responseBody: %s",
+                request.getMethod().name(),
+                response.getHeaders().toString(),
+                response.getBody());
+        logger.info(str2);
         return response;
     }
 }
