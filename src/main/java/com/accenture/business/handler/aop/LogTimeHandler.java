@@ -30,11 +30,12 @@ public class LogTimeHandler {
     }
 
     @Around("logTime()")
-    public void doAround(ProceedingJoinPoint point) throws Throwable {
+    public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
-        point.proceed();
+        Object result = joinPoint.proceed();
         long endTime = System.currentTimeMillis();
         logger.info("Time cost : {}",endTime-startTime);
+        return result;
     }
 
     @After("logTime()")
