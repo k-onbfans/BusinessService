@@ -1,8 +1,8 @@
-package com.accenture.business.v2.controller;
+package com.accenture.business.controller.v2;
 
 import com.accenture.business.request.FindByRouteReq;
-import com.accenture.business.v1.response.FlightV1Reses;
-import com.accenture.business.v2.service.FlightStatusV2Service;
+import com.accenture.business.response.v1.FlightV1Reses;
+import com.accenture.business.service.v2.FlightStatusV2Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
-package com.accenture.business.v1.service;
+package com.accenture.business.service.v1;
 
 import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
-import com.accenture.business.v1.response.FlightV1Res;
-import com.accenture.business.v1.response.FlightV1Reses;
+import com.accenture.business.response.v1.FlightV1Res;
+import com.accenture.business.response.v1.FlightV1Reses;
 
 public interface FlightStatusService {
 

@@ -4,9 +4,7 @@ import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
 import com.accenture.business.response.FlightRes;
 import com.accenture.business.response.FlightReses;
-import com.accenture.business.v1.bean.Port;
-import com.accenture.business.v1.response.FlightV1Res;
-import com.accenture.business.v1.response.FlightV1Reses;
+import com.accenture.business.bean.Port;
 
 public interface HttpService {
 
@@ -14,10 +12,10 @@ public interface HttpService {
 
     public FlightReses flightResesFromFindByRouteReq(String url, FindByRouteReq request);
 
-    public FlightV1Res GetFlightV1(String url);
+    public String getFlightV1(String url);
 
-    public FlightV1Res PostFlightV1(String url, FindByFlightNumberReq request);
+    public String postFlightV1(String url, FindByFlightNumberReq request);
 
-    public FlightV1Reses PostFlightByRouteV1(String url, Port request);
+    public String postFlightByRouteV1(String url, Port request);
 
 }

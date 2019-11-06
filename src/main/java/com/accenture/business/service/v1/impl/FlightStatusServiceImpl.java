@@ -1,14 +1,14 @@
-package com.accenture.business.v1.service.impl;
+package com.accenture.business.service.v1.impl;
 
 import com.accenture.business.handler.aop.LogTime;
 import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
 import com.accenture.business.service.HttpService;
 import com.accenture.business.utils.JSONUtil;
-import com.accenture.business.v1.bean.Port;
-import com.accenture.business.v1.response.FlightV1Res;
-import com.accenture.business.v1.response.FlightV1Reses;
-import com.accenture.business.v1.service.FlightStatusService;
+import com.accenture.business.bean.Port;
+import com.accenture.business.response.v1.FlightV1Res;
+import com.accenture.business.response.v1.FlightV1Reses;
+import com.accenture.business.service.v1.FlightStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.List;
 public class FlightStatusServiceImpl implements FlightStatusService {
 
     @Autowired
-    private HttpService httpUtil;
+    private HttpService httpService;
 
     @Value("${flightStatusByFDV1Url}")
     private String flightStatusUrl;
@@ -36,15 +36,15 @@ public class FlightStatusServiceImpl implements FlightStatusService {
 
         String flightInfoUrl = "http://localhost:8080/v1/flightinfo/flightnumber/" + request.getFlightNumber();
 
-        String infoResponse = httpUtil.getFlightV1(flightInfoUrl);
+        String infoResponse = httpService.getFlightV1(flightInfoUrl);
         FlightV1Res response = new FlightV1Res();
         response = JSONUtil.stringToDTO(infoResponse,response,FlightV1Res.class);
 
-        String statusResponse = httpUtil.postFlightV1(flightStatusUrl,request);
+        String statusResponse = httpService.postFlightV1(flightStatusUrl,request);
 
         response = JSONUtil.stringToDTO(statusResponse,response,FlightV1Res.class);
 
-        String timeResponse = httpUtil.postFlightV1(flightTimeUrl,request);
+        String timeResponse = httpService.postFlightV1(flightTimeUrl,request);
 
         response = JSONUtil.stringToDTO(timeResponse,response,FlightV1Res.class);
 
@@ -58,7 +58,7 @@ public class FlightStatusServiceImpl implements FlightStatusService {
         Port port = new Port();
         port.setDestination(request.getDestinationPort());
         port.setOrigin(request.getOriginPort());
-        String list = httpUtil.postFlightByRouteV1(flightInfoByRouteUrl,port);
+        String list = httpService.postFlightByRouteV1(flightInfoByRouteUrl,port);
         reses = JSONUtil.stringToDTO(list,reses,FlightV1Reses.class);
         FindByFlightNumberReq req = new FindByFlightNumberReq();
         req.setDepartureDate(request.getDepartureDate());
@@ -66,11 +66,11 @@ public class FlightStatusServiceImpl implements FlightStatusService {
         for(FlightV1Res res : resList){
             req.setFlightNumber(res.getFlightNumber());
 
-            String statusResponse = httpUtil.postFlightV1(flightStatusUrl,req);
+            String statusResponse = httpService.postFlightV1(flightStatusUrl,req);
 
             res = JSONUtil.stringToDTO(statusResponse,res,FlightV1Res.class);
 
-            String timeResponse = httpUtil.postFlightV1(flightTimeUrl,req);
+            String timeResponse = httpService.postFlightV1(flightTimeUrl,req);
 
             JSONUtil.stringToDTO(timeResponse,res,FlightV1Res.class);
 

@@ -1,4 +1,4 @@
-package com.accenture.business.v1.bean;
+package com.accenture.business.bean;
 
 public class DepAndArrTime {
 
