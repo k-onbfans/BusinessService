@@ -1,4 +1,4 @@
-package com.accenture.business.utils;
+package com.accenture.business.service;
 
 import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
@@ -6,7 +6,7 @@ import com.accenture.business.response.FlightRes;
 import com.accenture.business.response.FlightReses;
 import com.accenture.business.v1.bean.Port;
 
-public interface HttpUtil {
+public interface HttpService {
 
     public FlightRes flightResFromFindByFlightNumberReq(String url, FindByFlightNumberReq request);
 

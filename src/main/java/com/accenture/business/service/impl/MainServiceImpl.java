@@ -5,7 +5,7 @@ import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
 import com.accenture.business.response.FlightRes;
 import com.accenture.business.service.MainService;
-import com.accenture.business.utils.HttpUtil;
+import com.accenture.business.service.HttpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.List;
 public class MainServiceImpl implements MainService {
 
     @Autowired
-    private HttpUtil httpUtil;
+    private HttpService httpUtil;
 
     @Value("${flightInfoByFDUrl}")
     private String flightInfoByFDUrl;
