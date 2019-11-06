@@ -7,6 +7,7 @@ public class FlightV1Reses {
     List<FlightV1Res> list;
 
     public FlightV1Reses(List<FlightV1Res> list) {
+
         this.list = list;
     }
 
