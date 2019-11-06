@@ -1,10 +1,10 @@
-package com.accenture.business.v1.controller;
+package com.accenture.business.controller.v1;
 
 import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
-import com.accenture.business.v1.response.FlightV1Res;
-import com.accenture.business.v1.response.FlightV1Reses;
-import com.accenture.business.v1.service.FlightStatusService;
+import com.accenture.business.response.v1.FlightV1Res;
+import com.accenture.business.response.v1.FlightV1Reses;
+import com.accenture.business.service.v1.FlightStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

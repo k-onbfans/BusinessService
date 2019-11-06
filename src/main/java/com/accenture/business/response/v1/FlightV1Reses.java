@@ -1,4 +1,4 @@
-package com.accenture.business.v1.response;
+package com.accenture.business.response.v1;
 
 import java.util.List;
 

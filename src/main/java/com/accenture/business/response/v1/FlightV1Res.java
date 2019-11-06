@@ -1,8 +1,8 @@
-package com.accenture.business.v1.response;
+package com.accenture.business.response.v1;
 
 import com.accenture.business.handler.reflect.TypeReflect;
-import com.accenture.business.v1.bean.DepAndArrTime;
-import com.accenture.business.v1.bean.Port;
+import com.accenture.business.bean.DepAndArrTime;
+import com.accenture.business.bean.Port;
 
 public class FlightV1Res {
     @TypeReflect(value = "flightNumber")

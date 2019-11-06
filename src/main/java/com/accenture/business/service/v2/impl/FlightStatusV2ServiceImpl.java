@@ -1,14 +1,14 @@
-package com.accenture.business.v2.service.impl;
+package com.accenture.business.service.v2.impl;
 
 import com.accenture.business.handler.aop.LogTime;
 import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
 import com.accenture.business.service.HttpService;
 import com.accenture.business.utils.JSONUtil;
-import com.accenture.business.v1.bean.Port;
-import com.accenture.business.v1.response.FlightV1Res;
-import com.accenture.business.v1.response.FlightV1Reses;
-import com.accenture.business.v2.service.FlightStatusV2Service;
+import com.accenture.business.bean.Port;
+import com.accenture.business.response.v1.FlightV1Res;
+import com.accenture.business.response.v1.FlightV1Reses;
+import com.accenture.business.service.v2.FlightStatusV2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;

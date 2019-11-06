@@ -4,7 +4,7 @@ import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
 import com.accenture.business.response.FlightRes;
 import com.accenture.business.response.FlightReses;
-import com.accenture.business.v1.bean.Port;
+import com.accenture.business.bean.Port;
 
 public interface HttpService {
 
