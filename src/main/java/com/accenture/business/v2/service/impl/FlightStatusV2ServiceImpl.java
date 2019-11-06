@@ -3,7 +3,7 @@ package com.accenture.business.v2.service.impl;
 import com.accenture.business.handler.aop.LogTime;
 import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
-import com.accenture.business.utils.HttpUtil;
+import com.accenture.business.service.HttpService;
 import com.accenture.business.utils.JSONUtil;
 import com.accenture.business.v1.bean.Port;
 import com.accenture.business.v1.response.FlightV1Res;
@@ -24,7 +24,7 @@ import java.util.concurrent.Future;
 public class FlightStatusV2ServiceImpl implements FlightStatusV2Service {
 
     @Autowired
-    private HttpUtil httpUtil;
+    private HttpService httpUtil;
 
     @Value("${flightStatusByFDV1Url}")
     private String flightStatusUrl;
