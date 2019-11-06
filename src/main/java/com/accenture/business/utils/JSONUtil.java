@@ -49,6 +49,7 @@ public class JSONUtil {
         return jsonObject.getAsString();
     }
 
+
     public static <T> T stringToDTO(String str,T obj,Class<T> clazz)  {
         JsonObject jsonObject = new JsonParser().parse(str).getAsJsonObject();
         Field[] fields = clazz.getDeclaredFields();
