@@ -35,7 +35,8 @@ public class RequestBodyLogger extends RequestBodyAdviceAdapter {
     public HttpInputMessage beforeBodyRead(HttpInputMessage inputMessage, MethodParameter parameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) throws IOException {
         byte[] body = IOUtils.toByteArray(inputMessage.getBody());
         String strBody = new String(body, StandardCharsets.UTF_8);
-        logger.info(parameter.getMethod().getName() + "\ntargetType:" + targetType.getTypeName() + "\nparameter:" + parameter.getParameterName() + "\n" + strBody);
+        String str = String.format("%s %n targetType: %s %n parameter: %s %n %s",parameter.getMethod().getName(),targetType.getTypeName(),parameter.getParameterName(),strBody);
+        logger.info(str);
         return new SimpleHttpInputMessage(inputMessage.getHeaders(), new ByteArrayInputStream(body));
     }
 
