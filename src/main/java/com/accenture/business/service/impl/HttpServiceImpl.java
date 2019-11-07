@@ -1,6 +1,8 @@
 package com.accenture.business.service.impl;
 
 import com.accenture.business.request.FindByFlightNumberReq;
+import com.accenture.business.response.v1.FlightV1Res;
+import com.accenture.business.response.v1.FlightV1Reses;
 import com.accenture.business.service.HttpService;
 import com.accenture.business.bean.Port;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,26 +17,26 @@ public class HttpServiceImpl implements HttpService {
     private RestTemplate restTemplate;
 
     @Override
-    public String getFlightV1(String url){
+    public FlightV1Res getFlightV1(String url){
 
-        ResponseEntity<String> entity = restTemplate.getForEntity(url,String.class);
-
-        return entity.getBody();
-    }
-
-    @Override
-    public String postFlightV1(String url, FindByFlightNumberReq request) {
-
-        ResponseEntity<String> entity = restTemplate.postForEntity(url,request,String.class);
-
+        ResponseEntity<FlightV1Res> entity = restTemplate.getForEntity(url,FlightV1Res.class);
 
         return entity.getBody();
     }
 
     @Override
-    public String postFlightByRouteV1(String url, Port request) {
+    public FlightV1Res postFlightV1(String url, FindByFlightNumberReq request) {
 
-        ResponseEntity<String> entity = restTemplate.postForEntity(url,request,String.class);
+        ResponseEntity<FlightV1Res> entity = restTemplate.postForEntity(url,request,FlightV1Res.class);
+
+
+        return entity.getBody();
+    }
+
+    @Override
+    public FlightV1Reses postFlightByRouteV1(String url, Port request) {
+
+        ResponseEntity<FlightV1Reses> entity = restTemplate.postForEntity(url,request,FlightV1Reses.class);
 
         return entity.getBody();
     }

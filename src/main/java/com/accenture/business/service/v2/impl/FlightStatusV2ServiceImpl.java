@@ -5,7 +5,6 @@ import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
 import com.accenture.business.service.HttpService;
 import com.accenture.business.service.v2.AsyncService;
-import com.accenture.business.utils.JSONUtil;
 import com.accenture.business.bean.Port;
 import com.accenture.business.response.v1.FlightV1Res;
 import com.accenture.business.response.v1.FlightV1Reses;
@@ -42,12 +41,10 @@ public class FlightStatusV2ServiceImpl implements FlightStatusV2Service {
     @Override
     @LogTime
     public FlightV1Reses searchByRoute(FindByRouteReq request){
-        FlightV1Reses reses = new FlightV1Reses();
         Port port = new Port();
         port.setDestination(request.getDestinationPort());
         port.setOrigin(request.getOriginPort());
-        String list = httpUtil.postFlightByRouteV1(flightInfoByRouteUrl,port);
-        reses = JSONUtil.stringToDTO(list,reses,FlightV1Reses.class);
+        FlightV1Reses reses = httpUtil.postFlightByRouteV1(flightInfoByRouteUrl,port);
         FindByFlightNumberReq req = new FindByFlightNumberReq();
         req.setDepartureDate(request.getDepartureDate());
         List<FlightV1Res> resList = reses.getList();
