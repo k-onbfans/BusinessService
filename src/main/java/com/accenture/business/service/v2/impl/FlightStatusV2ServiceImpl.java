@@ -12,6 +12,9 @@ import com.accenture.business.response.v1.FlightV1Reses;
 import com.accenture.business.service.v2.FlightStatusV2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 @Service
+@EnableCaching
 public class FlightStatusV2ServiceImpl implements FlightStatusV2Service {
 
     @Autowired
@@ -38,6 +42,8 @@ public class FlightStatusV2ServiceImpl implements FlightStatusV2Service {
     @Value("${flightInfoByODV1Url}")
     private String flightInfoByRouteUrl;
 
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     @LogTime

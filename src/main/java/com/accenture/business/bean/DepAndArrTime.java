@@ -1,6 +1,8 @@
 package com.accenture.business.bean;
 
-public class DepAndArrTime {
+import java.io.Serializable;
+
+public class DepAndArrTime implements Serializable {
 
     private String departureTime;
     private String arrivalTime;

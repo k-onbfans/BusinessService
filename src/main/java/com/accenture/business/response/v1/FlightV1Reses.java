@@ -1,8 +1,13 @@
 package com.accenture.business.response.v1;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class FlightV1Reses {
+/**
+ * @author yifei.zhu
+ */
+public class FlightV1Reses implements Serializable {
+
 
     List<FlightV1Res> list;
 

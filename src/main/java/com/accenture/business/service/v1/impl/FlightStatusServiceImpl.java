@@ -11,11 +11,14 @@ import com.accenture.business.response.v1.FlightV1Reses;
 import com.accenture.business.service.v1.FlightStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@EnableCaching
 public class FlightStatusServiceImpl implements FlightStatusService {
 
     @Autowired
@@ -53,6 +56,7 @@ public class FlightStatusServiceImpl implements FlightStatusService {
 
     @Override
     @LogTime
+    @Cacheable(cacheNames="test_redis",key = "#request.departureDate")
     public FlightV1Reses searchByRoute(FindByRouteReq request) {
         FlightV1Reses reses = new FlightV1Reses();
         Port port = new Port();

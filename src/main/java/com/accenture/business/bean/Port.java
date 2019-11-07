@@ -1,6 +1,8 @@
 package com.accenture.business.bean;
 
-public class Port {
+import java.io.Serializable;
+
+public class Port implements Serializable {
 
     private String origin;
     private String destination;

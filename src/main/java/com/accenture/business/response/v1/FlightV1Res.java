@@ -4,7 +4,9 @@ import com.accenture.business.handler.reflect.TypeReflect;
 import com.accenture.business.bean.DepAndArrTime;
 import com.accenture.business.bean.Port;
 
-public class FlightV1Res {
+import java.io.Serializable;
+
+public class FlightV1Res implements Serializable {
     @TypeReflect(value = "flightNumber")
     private String flightNumber;
 
