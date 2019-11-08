@@ -1,21 +1,20 @@
 package com.accenture.business.config;
 
 import com.accenture.business.constant.CacheNameConstants;
+import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class ExpireTimeConfig {
 
-    private Map<String,Long> ExpireTimeMap;
 
     public Map<String, Long> getExpireTimeMap() {
-        ExpireTimeMap.put(CacheNameConstants.ASYNC, (long) 30000);
-        ExpireTimeMap.put(CacheNameConstants.TEST, (long) 120000);
-        ExpireTimeMap.put(CacheNameConstants.DEFAULT, (long) 5*60*1000);
-        return ExpireTimeMap;
-    }
-
-    public void setExpireTimeMap(Map<String, Long> expireTimeMap) {
-        ExpireTimeMap = expireTimeMap;
+        Map<String,Long> expireTimeMap = new HashMap<>();
+        expireTimeMap.put(CacheNameConstants.ASYNC, (long) 30000);
+        expireTimeMap.put(CacheNameConstants.TEST, (long) 120000);
+        expireTimeMap.put(CacheNameConstants.DEFAULT, (long) 5*60*1000);
+        return expireTimeMap;
     }
 }

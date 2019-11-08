@@ -57,7 +57,7 @@ public class FlightStatusServiceImpl implements FlightStatusService {
 
     @Override
     @LogTime
-    @Cacheable(cacheNames = CacheNameConstants.DEFAULT,key = "#request.destinationPort")
+    @Cacheable(cacheNames = CacheNameConstants.DEFAULT,keyGenerator = "keyGenerator")
     public FlightV1Reses searchByRoute(FindByRouteReq request) {
         FlightV1Reses reses = new FlightV1Reses();
         Port port = new Port();

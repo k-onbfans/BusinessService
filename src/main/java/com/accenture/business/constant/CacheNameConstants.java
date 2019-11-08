@@ -2,9 +2,13 @@ package com.accenture.business.constant;
 
 public class CacheNameConstants {
 
-    public final static String DEFAULT = "DefaultMethodCache";
+    private CacheNameConstants() {
 
-    public final static String TEST = "TestMethodCache";
+    }
 
-    public final static String ASYNC = "AsyncMethodCache";
+    public static final String DEFAULT = "DefaultMethodCache";
+
+    public static final String TEST = "TestMethodCache";
+
+    public static final String ASYNC = "AsyncMethodCache";
 }

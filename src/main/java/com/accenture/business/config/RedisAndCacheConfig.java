@@ -9,20 +9,17 @@ import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.*;
-
-import java.time.Duration;
-
 
 /**
  * @author yifei.zhu
  */
 @Configuration
 public class RedisAndCacheConfig extends CachingConfigurerSupport {
+
 
 
     @Bean
@@ -43,13 +40,12 @@ public class RedisAndCacheConfig extends CachingConfigurerSupport {
         return template;
     }
 
-    @Bean(name = "cacheManager")
-    public CacheManager cacheManager(RedisTemplate<String,Object> redisTemplate) {
-        RedisCacheConfiguration cacheConfiguration =
-                RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(10))
-                .disableCachingNullValues().serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))
-                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer())).prefixKeysWith("");
-        return RedisCacheManager.builder(redisTemplate.getConnectionFactory()).cacheDefaults(cacheConfiguration).build();
+    @Bean
+    public CacheManager cacheManager(RedisTemplate<String,Object> redisTemplate,ExpireTimeConfig expireTimeConfig) {
+        RedisCacheManager rcManager = new RedisCacheManager(redisTemplate);
+        rcManager.setExpires(expireTimeConfig.getExpireTimeMap());
+
+        return rcManager;
     }
 
     @Override
