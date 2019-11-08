@@ -1,5 +1,6 @@
 package com.accenture.business.service.v2.impl;
 
+import com.accenture.business.constant.CacheNameConstants;
 import com.accenture.business.handler.aop.LogTime;
 import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
@@ -42,11 +43,9 @@ public class FlightStatusV2ServiceImpl implements FlightStatusV2Service {
     @Value("${flightInfoByODV1Url}")
     private String flightInfoByRouteUrl;
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
-
     @Override
     @LogTime
+//    @Cacheable(cacheNames= CacheNameConstants.ASYNC,keyGenerator = "keyGenerator")
     public FlightV1Reses searchByRoute(FindByRouteReq request){
         FlightV1Reses reses = new FlightV1Reses();
         Port port = new Port();
