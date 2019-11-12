@@ -11,24 +11,18 @@ import com.accenture.business.service.v1.FlightStatusService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@EnableCaching
 public class FlightStatusServiceImpl implements FlightStatusService {
 
     @Autowired
     private HttpService httpService;
-
-    @Value("${flightStatusByFDV1Url}")
-    private String flightStatusUrl;
-
-    @Value("${flightTimeByFDV1Url}")
-    private String flightTimeUrl;
-
-    @Value("${flightInfoByODV1Url}")
-    private String flightInfoByRouteUrl;
 
     @Override
     @LogTime
@@ -55,6 +49,7 @@ public class FlightStatusServiceImpl implements FlightStatusService {
 
     @Override
     @LogTime
+    @Cacheable
     public FlightV1Reses searchByRoute(FindByRouteReq request) {
         Port port = new Port();
         port.setDestination(request.getDestinationPort());

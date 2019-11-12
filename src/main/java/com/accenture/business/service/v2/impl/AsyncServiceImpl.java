@@ -35,11 +35,11 @@ public class AsyncServiceImpl implements AsyncService {
     public Future<FlightV1Res> getStatusAndTime(FindByFlightNumberReq req, FlightV1Res res){
         req.setFlightNumber(res.getFlightNumber());
 
-        FlightV1Res statusResponse = httpUtil.postFlightV1(flightStatusUrl,req);
+        FlightV1Res statusResponse = httpUtil.postFlightStatusV1(req);
 
         BeanUtils.copyProperties(statusResponse,res);
 
-        FlightV1Res timeResponse = httpUtil.postFlightV1(flightTimeUrl,req);
+        FlightV1Res timeResponse = httpUtil.postFlightTimeV1(req);
 
         BeanUtils.copyProperties(timeResponse,res);
 
