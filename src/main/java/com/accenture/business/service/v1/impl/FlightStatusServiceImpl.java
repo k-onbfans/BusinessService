@@ -41,11 +41,11 @@ public class FlightStatusServiceImpl implements FlightStatusService {
 
         BeanUtils.copyProperties(infoResponse,response);
 
-        FlightV1Res statusResponse = httpService.postFlightV1(flightStatusUrl,request);
+        FlightV1Res statusResponse = httpService.postFlightStatusV1(request);
 
         BeanUtils.copyProperties(statusResponse,response);
 
-        FlightV1Res timeResponse = httpService.postFlightV1(flightTimeUrl,request);
+        FlightV1Res timeResponse = httpService.postFlightTimeV1(request);
 
         BeanUtils.copyProperties(timeResponse,response);
 
@@ -59,16 +59,16 @@ public class FlightStatusServiceImpl implements FlightStatusService {
         Port port = new Port();
         port.setDestination(request.getDestinationPort());
         port.setOrigin(request.getOriginPort());
-        FlightV1Reses reses = httpService.postFlightByRouteV1(flightInfoByRouteUrl,port);
+        FlightV1Reses reses = httpService.postFlightByRouteV1(port);
         FindByFlightNumberReq req = new FindByFlightNumberReq();
         req.setDepartureDate(request.getDepartureDate());
         List<FlightV1Res> resList = reses.getList();
         for(FlightV1Res res : resList){
             req.setFlightNumber(res.getFlightNumber());
 
-            FlightV1Res statusResponse = httpService.postFlightV1(flightStatusUrl,req);
+            FlightV1Res statusResponse = httpService.postFlightStatusV1(req);
 
-            FlightV1Res timeResponse = httpService.postFlightV1(flightTimeUrl,req);
+            FlightV1Res timeResponse = httpService.postFlightTimeV1(req);
 
             BeanUtils.copyProperties(statusResponse,res);
 
