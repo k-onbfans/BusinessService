@@ -59,6 +59,7 @@ public class FlightStatusServiceImpl implements FlightStatusService {
     @LogTime
     @Cacheable(cacheNames = CacheNameConstants.DEFAULT,keyGenerator = "keyGenerator")
     public FlightV1Reses searchByRoute(FindByRouteReq request) {
+//        String flightInfoByRouteUrl = "http://localhost:8080/v1/flightinfo/port";
         FlightV1Reses reses = new FlightV1Reses();
         Port port = new Port();
         port.setDestination(request.getDestinationPort());

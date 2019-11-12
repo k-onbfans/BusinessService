@@ -5,6 +5,7 @@ import com.accenture.business.bean.DepAndArrTime;
 import com.accenture.business.bean.Port;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class FlightV1Res implements Serializable {
     @TypeReflect(value = "flightNumber")
@@ -85,5 +86,25 @@ public class FlightV1Res implements Serializable {
 
     public void setEstimatedTime(DepAndArrTime estimatedTime) {
         this.estimatedTime = estimatedTime;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FlightV1Res that = (FlightV1Res) o;
+        return Objects.equals(flightNumber, that.flightNumber) &&
+                Objects.equals(port, that.port) &&
+                Objects.equals(aircraft, that.aircraft) &&
+                Objects.equals(departureDate, that.departureDate) &&
+                Objects.equals(status, that.status) &&
+                Objects.equals(scheduledTime, that.scheduledTime) &&
+                Objects.equals(estimatedTime, that.estimatedTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(flightNumber, port, aircraft, departureDate, status, scheduledTime, estimatedTime);
     }
 }
