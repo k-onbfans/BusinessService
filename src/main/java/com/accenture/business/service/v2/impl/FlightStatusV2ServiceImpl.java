@@ -10,6 +10,8 @@ import com.accenture.business.response.v1.FlightV1Res;
 import com.accenture.business.response.v1.FlightV1Reses;
 import com.accenture.business.service.v2.FlightStatusV2Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 @Service
+@EnableCaching
 public class FlightStatusV2ServiceImpl implements FlightStatusV2Service {
 
     @Autowired

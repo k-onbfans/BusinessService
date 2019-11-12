@@ -1,6 +1,9 @@
 package com.accenture.business.bean;
 
-public class DepAndArrTime {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class DepAndArrTime implements Serializable {
 
     private String departureTime;
     private String arrivalTime;
@@ -35,4 +38,18 @@ public class DepAndArrTime {
     }
 
     public DepAndArrTime() {}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DepAndArrTime that = (DepAndArrTime) o;
+        return Objects.equals(departureTime, that.departureTime) &&
+                Objects.equals(arrivalTime, that.arrivalTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(departureTime, arrivalTime);
+    }
 }
