@@ -1,5 +1,6 @@
 package com.accenture.business.service.v1.impl;
 
+import com.accenture.business.constant.CacheNameConstants;
 import com.accenture.business.handler.aop.LogTime;
 import com.accenture.business.request.FindByFlightNumberReq;
 import com.accenture.business.request.FindByRouteReq;
@@ -49,7 +50,7 @@ public class FlightStatusServiceImpl implements FlightStatusService {
 
     @Override
     @LogTime
-    @Cacheable
+    @Cacheable(cacheNames = CacheNameConstants.DEFAULT,keyGenerator = "keyGenerator")
     public FlightV1Reses searchByRoute(FindByRouteReq request) {
         Port port = new Port();
         port.setDestination(request.getDestinationPort());
