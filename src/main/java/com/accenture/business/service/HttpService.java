@@ -9,8 +9,10 @@ public interface HttpService {
 
     public FlightV1Res getFlightV1(String url);
 
-    public FlightV1Res postFlightV1(String url, FindByFlightNumberReq request);
+    public FlightV1Res postFlightStatusV1(FindByFlightNumberReq request);
 
-    public FlightV1Reses postFlightByRouteV1(String url, Port request);
+    public FlightV1Res postFlightTimeV1(FindByFlightNumberReq request);
+
+    public FlightV1Reses postFlightByRouteV1(Port request);
 
 }

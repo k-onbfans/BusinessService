@@ -10,7 +10,6 @@ import com.accenture.business.response.v1.FlightV1Res;
 import com.accenture.business.response.v1.FlightV1Reses;
 import com.accenture.business.service.v2.FlightStatusV2Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,24 +26,13 @@ public class FlightStatusV2ServiceImpl implements FlightStatusV2Service {
     @Autowired
     private AsyncService asyncService;
 
-
-    @Value("${flightStatusByFDV1Url}")
-    private String flightStatusUrl;
-
-    @Value("${flightTimeByFDV1Url}")
-    private String flightTimeUrl;
-
-    @Value("${flightInfoByODV1Url}")
-    private String flightInfoByRouteUrl;
-
-
     @Override
     @LogTime
     public FlightV1Reses searchByRoute(FindByRouteReq request){
         Port port = new Port();
         port.setDestination(request.getDestinationPort());
         port.setOrigin(request.getOriginPort());
-        FlightV1Reses reses = httpUtil.postFlightByRouteV1(flightInfoByRouteUrl,port);
+        FlightV1Reses reses = httpUtil.postFlightByRouteV1(port);
         FindByFlightNumberReq req = new FindByFlightNumberReq();
         req.setDepartureDate(request.getDepartureDate());
         List<FlightV1Res> resList = reses.getList();
